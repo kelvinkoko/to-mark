@@ -4,7 +4,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta charset="UTF-8">
         <title>TITLE HERE</title>
-        <script src="../build/bundle.js"></script>
+        <script src="../dist/to-mark.js"></script>
         <style>
             #myHtml blockquote {
                 padding: 20px 25px;
@@ -28,6 +28,11 @@
     </head>
     <body>
         <div id='myHtml'>
+          <h3><a href="https://github.com/markdown-it/markdown-it-footnote">Footnotes</a></h3>
+            <p>Footnote 1 link<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
+            <p>Footnote 2 link<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
+            <p>Inline footnote<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> definition.</p>
+            <p>Duplicated footnote reference<sup class="footnote-ref"><a href="#fn2" id="fnref2:1">[2:1]</a></sup>.</p>
             <h1>HELLO</h1>
             <h2>HELLO</h2>
             <h3>HELLO</h3>
@@ -85,6 +90,18 @@
                     </tr>
                 </tbody>
             </table>
+            <hr class="footnotes-sep">
+            <section class="footnotes">
+            <ol class="footnotes-list">
+            <li id="fn1" class="footnote-item"><p>Footnote <strong>can have markup</strong></p>
+            <p>and multiple paragraphs. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+            </li>
+            <li id="fn2" class="footnote-item"><p>Footnote text. <a href="#fnref2" class="footnote-backref">↩︎</a> <a href="#fnref2:1" class="footnote-backref">↩︎</a></p>
+            </li>
+            <li id="fn3" class="footnote-item"><p>Text of inline footnote <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+            </li>
+            </ol>
+            </section>
         </div>
         <pre id='preview' style='display:block;margin-top:11px;border-top:3px solid #f00;white-space:pre;'></pre>
         <script>

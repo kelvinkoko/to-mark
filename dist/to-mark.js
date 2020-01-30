@@ -91,7 +91,9 @@ var FIND_LAST_RETURN_RX = /\n$/g,
     FIND_BR_AND_RETURN_RX = /[ \xA0]+\n\n/g,
     FIND_MULTIPLE_EMPTYLINE_BETWEEN_TEXT_RX = /([ \xA0]+\n){2,}/g,
     FIND_LINK_HREF = /href\=\"(.*?)\"/,
-    START_OF_LINES_RX = /^/gm;
+    START_OF_LINES_RX = /^/gm,
+    FIND_FOOTNOTE_INDEX_RX = /\[(\d+):?\d*\]/,
+    FIND_FOOTNOTE_CONTENT_RX = /(.*?)\[↩︎\]\(#fnref(\d+).*\).*/;
 
 /**
  * basicRenderer
@@ -295,7 +297,10 @@ var basicRenderer = Renderer.factory({
     },
 
     //HR
-    'HR': function() {
+    'HR': function(node) {
+        if (node.className === 'footnotes-sep') {
+            return '';
+        }
         return '\n\n- - -\n\n';
     },
 
@@ -320,6 +325,33 @@ var basicRenderer = Renderer.factory({
         res = lastNremoved.replace(START_OF_LINES_RX, '    ');
 
         return '\n\n' + res + '\n\n';
+    },
+    'SUP': function(node, subContent) {
+        var reference = '';
+        var match = null;
+        if (node.className === 'footnote-ref') {
+            reference = node.textContent;
+            match = reference.match(FIND_FOOTNOTE_INDEX_RX);
+            if (match[1]) {
+                return '[^' + match[1] + ']';
+            }
+        }
+        return subContent;
+    },
+    'SECTION': function(node, subContent) {
+        return subContent;
+    },
+    'SECTION OL LI': function(node, subContent) {
+        var match = '';
+        var footnoteContent = '';
+        var footnoteIndex = '';
+        if (node.className === 'footnote-item') {
+            match = subContent.match(FIND_FOOTNOTE_CONTENT_RX);
+            footnoteContent = match[1];
+            footnoteIndex = match[2];
+            return '[^' + footnoteIndex + ']: ' + footnoteContent + '\n';
+        }
+        return subContent;
     }
 });
 

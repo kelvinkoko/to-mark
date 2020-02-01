@@ -13,7 +13,7 @@ var FIND_LAST_RETURN_RX = /\n$/g,
     FIND_LINK_HREF = /href\=\"(.*?)\"/,
     START_OF_LINES_RX = /^/gm,
     FIND_FOOTNOTE_INDEX_RX = /\[(\d+):?\d*\]/,
-    FIND_FOOTNOTE_CONTENT_RX = /(.*?)\[↩︎\]\(#fnref(\d+).*\).*/;
+    FIND_FOOTNOTE_CONTENT_RX = /([\S\s]*)\[↩︎\]\(#fnref(\d+).*\).*/;
 
 /**
  * basicRenderer
@@ -217,10 +217,7 @@ var basicRenderer = Renderer.factory({
     },
 
     //HR
-    'HR': function(node) {
-        if (node.className === 'footnotes-sep') {
-            return '';
-        }
+    'HR': function() {
         return '\n\n- - -\n\n';
     },
 
@@ -258,7 +255,16 @@ var basicRenderer = Renderer.factory({
         }
         return subContent;
     },
+    'DIV': function(node, subContent) {
+        return subContent;
+    },
     'SECTION': function(node, subContent) {
+        return subContent;
+    },
+    'SECTION HR': function(node, subContent) {
+        if (node.parentNode.className === 'footnotes') {
+            return '';
+        }
         return subContent;
     },
     'SECTION OL LI': function(node, subContent) {
@@ -269,6 +275,7 @@ var basicRenderer = Renderer.factory({
             match = subContent.match(FIND_FOOTNOTE_CONTENT_RX);
             footnoteContent = match[1];
             footnoteIndex = match[2];
+            footnoteContent = footnoteContent.replace(/\s\s\n[\s\s\n]+/g, '\n\n\t');
             return '[^' + footnoteIndex + ']: ' + footnoteContent + '\n';
         }
         return subContent;

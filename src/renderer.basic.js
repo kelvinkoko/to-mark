@@ -13,7 +13,7 @@ var FIND_LAST_RETURN_RX = /\n$/g,
     FIND_LINK_HREF = /href\=\"(.*?)\"/,
     START_OF_LINES_RX = /^/gm,
     FIND_FOOTNOTE_INDEX_RX = /\[(\d+):?\d*\]/,
-    FIND_FOOTNOTE_CONTENT_RX = /([\S\s]*)\[↩︎\]\(#fnref(\d+).*\).*/;
+    FIND_FOOTNOTE_CONTENT_RX = /([\S\s]*?)\[↩︎\]\(#fnref(\d+).*\).*/;
 
 /**
  * basicRenderer

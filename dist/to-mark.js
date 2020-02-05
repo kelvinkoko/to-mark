@@ -329,7 +329,7 @@ var basicRenderer = Renderer.factory({
         if (node.className === 'footnote-ref') {
             reference = node.textContent;
             match = reference.match(FIND_FOOTNOTE_INDEX_RX);
-            if (match[1]) {
+            if (match && match[1]) {
                 return '[^' + match[1] + ']';
             }
         }
